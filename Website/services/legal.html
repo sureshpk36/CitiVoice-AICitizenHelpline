@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Legal Assistance - 24/7 AI Citizen Helpline</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    /* Chat layout */
+    .chat-container {
+      height: 600px;
+      display: flex;
+      flex-direction: column;
+    }
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem;
+    }
+    .message {
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: flex-start;
+    }
+    .message.user {
+      justify-content: flex-end;
+    }
+    .message-content {
+      max-width: 80%;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+    }
+    .message.bot .message-content {
+      background-color: #f1f5f9;
+      color: #1e293b;
+    }
+    .message.user .message-content {
+      background-color: #6366f1;
+      color: white;
+    }
+    .avatar {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 0.5rem;
+    }
+    .user .avatar {
+      margin-right: 0;
+      margin-left: 0.5rem;
+      background-color: #6366f1;
+      color: white;
+    }
+    .bot .avatar {
+      background-color: #e0e7ff;
+      color: #6366f1;
+    }
+    /* Thinking (Typing) Indicator */
+    .typing-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      margin: 8px 0;
+    }
+    .typing-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #6366f1;
+      border-radius: 50%;
+      animation: bounce 1.5s infinite;
+    }
+    .typing-dot:nth-child(2) {
+      animation-delay: 0.15s;
+    }
+    .typing-dot:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .tab {
+      cursor: pointer;
+      padding: 0.75rem 1rem;
+      text-align: center;
+      border-bottom: 2px solid transparent;
+      transition: all 0.3s ease;
+    }
+    .tab.active {
+      border-bottom-color: #6366f1;
+      color: #6366f1;
+      font-weight: 500;
+    }
+    /* Recording indicator animation */
+    .recording-indicator {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.25rem;
+      margin-top: 0.5rem;
+    }
+    .recording-bar {
+      width: 0.25rem;
+      background-color: #f87171;
+      border-radius: 1rem;
+      animation: pulse 1s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scaleY(1); }
+      50% { opacity: 0.6; transform: scaleY(0.6); }
+    }
+    .hidden {
+      display: none;
+    }
+    /* File drop area styling */
+    .file-drop-area {
+      border: 2px dashed #e2e8f0;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.3s;
+    }
+    .file-drop-area.highlight {
+      border-color: #6366f1;
+      background-color: #eef2ff;
+    }
+    /* Citation highlight for document responses */
+    .citation {
+      background-color: #fef9c3;
+      padding: 0 0.25rem;
+      border-radius: 0.25rem;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body class="bg-slate-50">
+  <!-- Header -->
+  <div class="bg-indigo-600 text-white py-8">
+    <div class="container mx-auto px-4">
+      <a href="../index.html" class="inline-flex items-center text-white/80 hover:text-white mb-6">
+        <i class="fas fa-arrow-left mr-2"></i>
+        Back to Home
+      </a>
+      <h1 class="text-3xl md:text-4xl font-bold mb-4">Legal Assistance</h1>
+      <p class="text-xl text-white/80 max-w-2xl">
+        Get instant legal guidance and connect with professional services when needed.
+      </p>
+    </div>
+  </div>
+  
+  <!-- Main content -->
+  <div class="container mx-auto px-4 py-12">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Left sidebar -->
+      <div class="lg:col-span-1">
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+          <div class="p-6 border-b border-slate-200">
+            <h2 class="text-xl font-bold text-slate-900">Legal Services</h2>
+            <p class="text-sm text-slate-500">Browse available legal assistance</p>
+          </div>
+          <div class="p-6">
+            <div class="relative mb-6">
+              <i class="fas fa-book-open absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+              <input 
+                type="text" 
+                placeholder="Search legal topics..." 
+                class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              >
+            </div>
+            <div class="space-y-1">
+              <button class="w-full text-left px-3 py-2 rounded-md hover:bg-slate-100 flex items-center text-slate-700">
+                <i class="fas fa-balance-scale mr-2 text-sm"></i>
+                Consumer Rights
+              </button>
+              <button class="w-full text-left px-3 py-2 rounded-md hover:bg-slate-100 flex items-center text-slate-700">
+                <i class="fas fa-users mr-2 text-sm"></i>
+                Family Law
+              </button>
+              <button class="w-full text-left px-3 py-2 rounded-md hover:bg-slate-100 flex items-center text-slate-700">
+                <i class="fas fa-file-contract mr-2 text-sm"></i>
+                Contract Law
+              </button>
+              <button class="w-full text-left px-3 py-2 rounded-md hover:bg-slate-100 flex items-center text-slate-700">
+                <i class="fas fa-book-open mr-2 text-sm"></i>
+                Legal Resources
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-md overflow-hidden mt-6">
+          <div class="p-6 border-b border-slate-200">
+            <h2 class="text-xl font-bold text-slate-900">Legal Document Templates</h2>
+            <p class="text-sm text-slate-500">Common legal documents</p>
+          </div>
+          <div class="p-6">
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <span class="text-slate-700">Rental Agreement</span>
+                <button class="px-3 py-1 text-sm border border-slate-300 rounded-md hover:bg-slate-100">Download</button>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-slate-700">Power of Attorney</span>
+                <button class="px-3 py-1 text-sm border border-slate-300 rounded-md hover:bg-slate-100">Download</button>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-slate-700">Will Template</span>
+                <button class="px-3 py-1 text-sm border border-slate-300 rounded-md hover:bg-slate-100">Download</button>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-slate-700">Affidavit Format</span>
+                <button class="px-3 py-1 text-sm border border-slate-300 rounded-md hover:bg-slate-100">Download</button>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-slate-700">Consumer Complaint</span>
+                <button class="px-3 py-1 text-sm border border-slate-300 rounded-md hover:bg-slate-100">Download</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Main content area -->
+      <div class="lg:col-span-2">
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+          <!-- Tabs -->
+          <div class="grid grid-cols-4 border-b border-slate-200">
+            <div class="tab active" data-tab="chat">AI Legal Assistant</div>
+            <div class="tab" data-tab="documents">Legal Documents</div>
+            <div class="tab" data-tab="docChat">Document Chat</div>
+            <div class="tab" data-tab="lawyers">Find Lawyers</div>
+          </div>
+          
+          <!-- Chat Tab -->
+          <div class="tab-content active" id="chat-tab">
+            <div class="chat-container bg-white rounded-lg overflow-hidden">
+              <!-- Chat header -->
+              <div class="bg-indigo-600 text-white p-4">
+                <div class="flex items-center">
+                  <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center mr-3">
+                    <i class="fas fa-balance-scale text-xl"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-bold">Legal Assistant</h3>
+                    <p class="text-sm text-indigo-100">Online • 24/7 Support</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Chat messages -->
+              <div class="chat-messages" id="chat-messages">
+                <!-- Initial bot greeting -->
+                <div class="message bot">
+                  <div class="avatar">
+                    <i class="fas fa-balance-scale"></i>
+                  </div>
+                  <div class="message-content">
+                    <p>Hello! I'm your Legal Assistant. How can I help you today?</p>
+                    <p class="text-xs mt-1 opacity-70">10:30 AM</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Thinking (Typing) Indicator -->
+              <div id="typing-indicator" class="typing-indicator hidden">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+              </div>
+              
+              <!-- Quick replies -->
+              <div class="p-2 border-t border-slate-200">
+                <div class="flex gap-2 overflow-x-auto pb-2">
+                  <button class="quick-reply px-3 py-1 text-sm border border-slate-300 rounded-md whitespace-nowrap hover:bg-slate-100">
+                    Rental Agreement
+                  </button>
+                  <button class="quick-reply px-3 py-1 text-sm border border-slate-300 rounded-md whitespace-nowrap hover:bg-slate-100">
+                    Consumer Rights
+                  </button>
+                  <button class="quick-reply px-3 py-1 text-sm border border-slate-300 rounded-md whitespace-nowrap hover:bg-slate-100">
+                    Family Law
+                  </button>
+                  <button class="quick-reply px-3 py-1 text-sm border border-slate-300 rounded-md whitespace-nowrap hover:bg-slate-100">
+                    Contract Disputes
+                  </button>
+                  <button class="quick-reply px-3 py-1 text-sm border border-slate-300 rounded-md whitespace-nowrap hover:bg-slate-100">
+                    Power of Attorney
+                  </button>
+                </div>
+              </div>
+              
+              <!-- Chat input -->
+              <div class="p-4 border-t border-slate-200">
+                <div class="flex items-center gap-2">
+                  <button id="mic-button" class="w-10 h-10 flex items-center justify-center rounded-full border border-slate-300 hover:bg-slate-100">
+                    <i class="fas fa-microphone"></i>
+                  </button>
+                  <input
+                    id="chat-input"
+                    type="text"
+                    placeholder="Type your message..."
+                    class="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  >
+                  <button id="send-button" class="w-10 h-10 flex items-center justify-center rounded-full bg-indigo-600 text-white hover:bg-indigo-700">
+                    <i class="fas fa-paper-plane"></i>
+                  </button>
+                </div>
+                <!-- Recording indicator -->
+                <div id="recording-indicator" class="recording-indicator hidden">
+                  <p class="text-sm text-red-600">Listening...</p>
+                  <div class="flex items-center gap-1">
+                    <div class="recording-bar h-4"></div>
+                    <div class="recording-bar h-6"></div>
+                    <div class="recording-bar h-3"></div>
+                    <div class="recording-bar h-5"></div>
+                    <div class="recording-bar h-2"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Legal Documents Tab -->
+          <div class="tab-content" id="documents-tab">
+            <div class="p-6">
+              <h2 class="text-xl font-bold text-slate-900 mb-2">Legal Document Templates</h2>
+              <p class="text-slate-600 mb-6">Download or customize legal documents</p>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Document cards -->
+                <div class="bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer">
+                  <div class="p-4 flex items-center justify-between">
+                    <div class="flex items-center">
+                      <i class="fas fa-file-alt text-lg text-indigo-600 mr-3"></i>
+                      <span>Rental Agreement</span>
+                    </div>
+                    <button class="px-3 py-1 text-sm text-slate-700 hover:bg-slate-200 rounded-md">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer">
+                  <div class="p-4 flex items-center justify-between">
+                    <div class="flex items-center">
+                      <i class="fas fa-file-alt text-lg text-indigo-600 mr-3"></i>
+                      <span>Power of Attorney</span>
+                    </div>
+                    <button class="px-3 py-1 text-sm text-slate-700 hover:bg-slate-200 rounded-md">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer">
+                  <div class="p-4 flex items-center justify-between">
+                    <div class="flex items-center">
+                      <i class="fas fa-file-alt text-lg text-indigo-600 mr-3"></i>
+                      <span>Will Template</span>
+                    </div>
+                    <button class="px-3 py-1 text-sm text-slate-700 hover:bg-slate-200 rounded-md">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer">
+                  <div class="p-4 flex items-center justify-between">
+                    <div class="flex items-center">
+                      <i class="fas fa-file-alt text-lg text-indigo-600 mr-3"></i>
+                      <span>Affidavit Format</span>
+                    </div>
+                    <button class="px-3 py-1 text-sm text-slate-700 hover:bg-slate-200 rounded-md">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer">
+                  <div class="p-4 flex items-center justify-between">
+                    <div class="flex items-center">
+                      <i class="fas fa-file-alt text-lg text-indigo-600 mr-3"></i>
+                      <span>Consumer Complaint</span>
+                    </div>
+                    <button class="px-3 py-1 text-sm text-slate-700 hover:bg-slate-200 rounded-md">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer">
+                  <div class="p-4 flex items-center justify-between">
+                    <div class="flex items-center">
+                      <i class="fas fa-file-alt text-lg text-indigo-600 mr-3"></i>
+                      <span>Legal Notice Format</span>
+                    </div>
+                    <button class="px-3 py-1 text-sm text-slate-700 hover:bg-slate-200 rounded-md">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer">
+                  <div class="p-4 flex items-center justify-between">
+                    <div class="flex items-center">
+                      <i class="fas fa-file-alt text-lg text-indigo-600 mr-3"></i>
+                      <span>Employment Contract</span>
+                    </div>
+                    <button class="px-3 py-1 text-sm text-slate-700 hover:bg-slate-200 rounded-md">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer">
+                  <div class="p-4 flex items-center justify-between">
+                    <div class="flex items-center">
+                      <i class="fas fa-file-alt text-lg text-indigo-600 mr-3"></i>
+                      <span>Non-Disclosure Agreement</span>
+                    </div>
+                    <button class="px-3 py-1 text-sm text-slate-700 hover:bg-slate-200 rounded-md">
+                      Download
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Document Chat Tab (RAG) -->
+          <div class="tab-content" id="docChat-tab">
+            <div class="grid grid-cols-1 md:grid-cols-2 h-full">
+              <!-- Left side - Document upload and info -->
+              <div class="border-r border-slate-200">
+                <div class="p-4 border-b border-slate-200 bg-indigo-50">
+                  <h2 class="text-lg font-bold text-slate-900">Upload Your Document</h2>
+                  <p class="text-sm text-slate-600 mt-1">Upload a PDF file to chat with its contents</p>
+                </div>
+                
+                <!-- Document upload area -->
+                <div class="p-4" id="doc-upload-section">
+                  <div id="doc-drop-area" class="file-drop-area">
+                    <i class="fas fa-file-pdf text-4xl text-slate-400 mb-3"></i>
+                    <h3 class="font-medium text-slate-700">Drop your PDF file here</h3>
+                    <p class="text-sm text-slate-500 mt-2">or</p>
+                    <label for="doc-file-upload" class="mt-3 inline-block px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 cursor-pointer">
+                      Browse Files
+                    </label>
+                    <input type="file" id="doc-file-upload" accept=".pdf" class="hidden">
+                    <p class="text-xs text-slate-500 mt-2">Max file size: 10MB</p>
+                  </div>
+                  
+                  <!-- Processing indicator (hidden by default) -->
+                  <div id="doc-processing-indicator" class="hidden mt-6">
+                    <div class="flex items-center mb-2">
+                      <div class="animate-spin mr-3">
+                        <i class="fas fa-spinner text-indigo-600"></i>
+                      </div>
+                      <p class="font-medium text-slate-700">Processing document...</p>
+                    </div>
+                    <div class="h-2 w-full bg-slate-200 rounded-full">
+                      <div id="doc-progress-bar" class="h-2 bg-indigo-600 rounded-full w-0 transition-all duration-300"></div>
+                    </div>
+                    <p id="doc-processing-status" class="text-xs text-slate-500 mt-1">Extracting text...</p>
+                  </div>
+                </div>
+                
+                <!-- Document info (hidden by default) -->
+                <div id="doc-info-section" class="hidden p-4 border-t border-slate-200">
+                  <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-semibold text-slate-800">Document Details</h3>
+                    <span id="doc-filename" class="text-xs text-slate-500 truncate max-w-[180px]"></span>
+                  </div>
+                  
+                  <div class="space-y-2 mb-4">
+                    <div class="flex justify-between text-sm">
+                      <span class="text-slate-500">Chunks:</span>
+                      <span id="doc-chunk-count" class="font-medium text-slate-700">0</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                      <span class="text-slate-500">Characters:</span>
+                      <span id="doc-char-count" class="font-medium text-slate-700">0</span>
+                    </div>
+                  </div>
+                  
+                  <div class="mb-4">
+                    <h4 class="text-sm font-medium text-slate-800 mb-1">Document Summary</h4>
+                    <div id="doc-summary" class="text-sm text-slate-600 p-3 bg-slate-100 rounded-lg max-h-36 overflow-y-auto"></div>
+                  </div>
+                  
+                  <button id="upload-new-doc" class="w-full px-3 py-2 text-sm bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200">
+                    Upload Different Document
+                  </button>
+                </div>
+                
+                <!-- Suggested queries (hidden by default) -->
+                <div id="doc-queries-section" class="hidden p-4 border-t border-slate-200">
+                  <h3 class="font-semibold text-slate-800 mb-2">Suggested Questions</h3>
+                  <div class="space-y-2">
+                    <button class="doc-query-btn w-full text-left px-3 py-2 text-sm rounded-md bg-slate-100 hover:bg-indigo-50 text-slate-700">
+                      What are the main parties in this document?
+                    </button>
+                    <button class="doc-query-btn w-full text-left px-3 py-2 text-sm rounded-md bg-slate-100 hover:bg-indigo-50 text-slate-700">
+                      What are the key dates mentioned?
+                    </button>
+                    <button class="doc-query-btn w-full text-left px-3 py-2 text-sm rounded-md bg-slate-100 hover:bg-indigo-50 text-slate-700">
+                      Summarize the main obligations
+                    </button>
+                    <button class="doc-query-btn w-full text-left px-3 py-2 text-sm rounded-md bg-slate-100 hover:bg-indigo-50 text-slate-700">
+                      What are the termination conditions?
+                    </button>
+                    <button class="doc-query-btn w-full text-left px-3 py-2 text-sm rounded-md bg-slate-100 hover:bg-indigo-50 text-slate-700">
+                      Explain the liability sections
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Right side - Chat interface -->
+              <div class="flex flex-col h-full">
+                <!-- Document chat status bar -->
+                <div id="doc-status" class="hidden bg-indigo-50 p-3 border-b border-indigo-100">
+                  <div class="flex items-center">
+                    <i class="fas fa-file-pdf text-indigo-600 mr-2"></i>
+                    <div>
+                      <h3 class="font-medium text-slate-800 text-sm">Document Active</h3>
+                      <p class="text-xs text-slate-500">Ask questions about this document</p>
+                    </div>
+                    <input type="hidden" id="active-doc-id" value="">
+                  </div>
+                </div>
+                
+                <!-- No document message -->
+                <div id="no-doc-message" class="flex-grow flex items-center justify-center p-6">
+                  <div class="text-center">
+                    <i class="fas fa-file-upload text-4xl text-slate-300 mb-4"></i>
+                    <h2 class="text-lg font-bold text-slate-700 mb-2">No Document Uploaded</h2>
+                    <p class="text-slate-500 text-sm">Upload a PDF document to start asking questions about its content</p>
+                  </div>
+                </div>
+                
+                <!-- Document chat area (hidden by default) -->
+                <div id="doc-chat-container" class="hidden flex-grow flex flex-col">
+                  <div class="flex-grow overflow-y-auto p-4" id="doc-chat-messages"></div>
+                  
+                  <!-- Thinking indicator -->
+                  <div id="doc-typing-indicator" class="typing-indicator hidden ml-10 mb-4">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                  </div>
+                  
+                  <!-- Chat input -->
+                  <div class="p-3 border-t border-slate-200">
+                    <div class="flex gap-2">
+                      <input
+                        id="doc-chat-input"
+                        type="text"
+                        placeholder="Ask about your document..."
+                        class="flex-1 px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                        disabled
+                      >
+                      <button id="doc-send-button" class="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 disabled:opacity-50 disabled:bg-slate-400 disabled:cursor-not-allowed" disabled>
+                        <i class="fas fa-paper-plane mr-1"></i>
+                        Send
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Find Lawyers Tab -->
+          <div class="tab-content" id="lawyers-tab">
+            <div class="p-6">
+              <h2 class="text-xl font-bold text-slate-900 mb-2">Find Legal Professionals</h2>
+              <p class="text-slate-600 mb-6">Connect with lawyers specializing in different areas</p>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Lawyer Card 1 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                  <div class="flex">
+                    <div class="w-1/3 bg-indigo-100 flex items-center justify-center p-4">
+                      <i class="fas fa-user-tie text-4xl text-indigo-600"></i>
+                    </div>
+                    <div class="p-4 w-2/3">
+                      <h3 class="font-bold text-lg">Advocate Sharma</h3>
+                      <p class="text-sm text-slate-600">Family Law</p>
+                      <div class="flex items-center justify-between mt-2">
+                        <span class="text-xs text-slate-500">15+ years</span>
+                        <div class="flex items-center">
+                          <span class="text-sm font-medium mr-1">4.8</span>
+                          <div class="flex">
+                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                            <i class="fas fa-star-half-alt text-yellow-400 text-xs"></i>
+                          </div>
+                        </div>
+                      </div>
+                      <button class="w-full mt-3 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-700">
+                        Contact
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <!-- Lawyer Card 2 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                  <div class="flex">
+                    <div class="w-1/3 bg-indigo-100 flex items-center justify-center p-4">
+                      <i class="fas fa-user-tie text-4xl text-indigo-600"></i>
+                    </div>
+                    <div class="p-4 w-2/3">
+                      <h3 class="font-bold text-lg">Advocate Patel</h3>
+                      <p class="text-sm text-slate-600">Consumer Rights</p>
+                      <div class="flex items-center justify-between mt-2">
+                        <span class="text-xs text-slate-500">10+ years</span>
+                        <div class="flex items-center">
+                          <span class="text-sm font-medium mr-1">4.6</span>
+                          <div class="flex">
+                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                            <i class="fas fa-star-half-alt text-yellow-400 text-xs"></i>
+                          </div>
+                        </div>
+                      </div>
+                      <button class="w-full mt-3 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-700">
+                        Contact
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <!-- Lawyer Card 3 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                  <div class="flex">
+                    <div class="w-1/3 bg-indigo-100 flex items-center justify-center p-4">
+                      <i class="fas fa-user-tie text-4xl text-indigo-600"></i>
+                    </div>
+                    <div class="p-4 w-2/3">
+                      <h3 class="font-bold text-lg">Advocate Singh</h3>
+                      <p class="text-sm text-slate-600">Property Law</p>
+                      <div class="flex items-center justify-between mt-2">
+                        <span class="text-xs text-slate-500">20+ years</span>
+                        <div class="flex items-center">
+                          <span class="text-sm font-medium mr-1">4.9</span>
+                          <div class="flex">
+                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                          </div>
+                        </div>
+                      </div>
+                      <button class="w-full mt-3 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-700">
+                        Contact
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <!-- Lawyer Card 4 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                  <div class="flex">
+                    <div class="w-1/3 bg-indigo-100 flex items-center justify-center p-4">
+                      <i class="fas fa-user-tie text-4xl text-indigo-600"></i>
+                    </div>
+                    <div class="p-4 w-2/3">
+                      <h3 class="font-bold text-lg">Advocate Gupta</h3>
+                      <p class="text-sm text-slate-600">Corporate Law</p>
+                      <div class="flex items-center justify-between mt-2">
+                        <span class="text-xs text-slate-500">12+ years</span>
+                        <div class="flex items-center">
+                          <span class="text-sm font-medium mr-1">4.7</span>
+                          <div class="flex">
+                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                            <i class="fas fa-star text-yellow-400 text-xs"></i>
+                            <i class="fas fa-star-half-alt text-yellow-400 text-xs"></i>
+                          </div>
+                        </div>
+                      </div>
+                      <button class="w-full mt-3 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-700">
+                        Contact
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 text-white py-8 mt-12">
+    <div class="container mx-auto px-4 text-center">
+      <p>&copy; 2025 AI Citizen Helpline. All rights reserved.</p>
+      <div class="flex justify-center space-x-4 mt-4">
+        <a href="#" class="text-slate-400 hover:text-white transition-colors">Privacy Policy</a>
+        <a href="#" class="text-slate-400 hover:text-white transition-colors">Terms of Service</a>
+        <a href="#" class="text-slate-400 hover:text-white transition-colors">Contact Us</a>
+      </div>
+    </div>
+  </footer>
+  
+  <!-- Socket.IO and custom script -->
+  <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"></script>
+  <script>
+    // Connect to the legal and legal-rag namespaces
+    const legalSocket = io('/legal');
+    const ragSocket = io('/legal-rag');
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      // Tab switching logic
+      const tabs = document.querySelectorAll('.tab');
+      const tabContents = document.querySelectorAll('.tab-content');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          const tabId = tab.getAttribute('data-tab');
+          tabs.forEach(t => t.classList.remove('active'));
+          tabContents.forEach(c => c.classList.remove('active'));
+          tab.classList.add('active');
+          document.getElementById(`${tabId}-tab`).classList.add('active');
+        });
+      });
+      
+      // -------------------- REGULAR LEGAL CHAT --------------------
+      // Chat elements
+      const chatMessages = document.getElementById('chat-messages');
+      const chatInput = document.getElementById('chat-input');
+      const sendButton = document.getElementById('send-button');
+      const micButton = document.getElementById('mic-button');
+      const recordingIndicator = document.getElementById('recording-indicator');
+      const typingIndicator = document.getElementById('typing-indicator');
+      const quickReplies = document.querySelectorAll('.quick-reply');
+      
+      // Function to append a message (user or bot)
+      function addMessage(text, sender) {
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('message', sender === 'user' ? 'user' : 'bot');
+        const now = new Date();
+        const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        if (sender === 'bot') {
+          messageDiv.innerHTML = `
+            <div class="avatar"><i class="fas fa-balance-scale"></i></div>
+            <div class="message-content">
+              <p>${text}</p>
+              <p class="text-xs mt-1 opacity-70">${timeString}</p>
+            </div>
+          `;
+        } else {
+          messageDiv.innerHTML = `
+            <div class="message-content">
+              <p>${text}</p>
+              <p class="text-xs mt-1 opacity-70">${timeString}</p>
+            </div>
+            <div class="avatar"><i class="fas fa-user"></i></div>
+          `;
+        }
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+      
+      // Send text message (shows typing indicator when chatbot is thinking)
+      function sendMessage() {
+        const text = chatInput.value.trim();
+        if (!text) return;
+        addMessage(text, 'user');
+        chatInput.value = '';
+        // Show typing indicator since chatbot is processing the text message
+        typingIndicator.classList.remove('hidden');
+        legalSocket.emit('send_message', { message: text });
+      }
+      sendButton.addEventListener('click', sendMessage);
+      chatInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') sendMessage(); });
+      
+      // Mic button event to handle voice input (show only recording indicator)
+      micButton.addEventListener('click', () => {
+        micButton.disabled = true;
+        micButton.innerHTML = '<i class="fas fa-microphone-slash"></i>';
+        recordingIndicator.classList.remove('hidden');
+        legalSocket.emit('start_voice_input');
+      });
+      
+      // Listen for recognized voice input – once received, add user message,
+      // show the thinking (typing) indicator, and emit the message for processing.
+      legalSocket.on('user_message', function(data) {
+        addMessage(data.text, 'user');
+        chatInput.value = data.text;
+        recordingIndicator.classList.add('hidden');
+        // Show the chatbot thinking animation (typing indicator)
+        typingIndicator.classList.remove('hidden');
+        // Emit the message so the chatbot starts processing it
+        legalSocket.emit('send_message', { message: data.text });
+        micButton.disabled = false;
+        micButton.innerHTML = '<i class="fas fa-microphone"></i>';
+      });
+      
+      // Handle streaming chatbot responses
+      legalSocket.on('response_stream', function(data) {
+        if (data.is_final) {
+          typingIndicator.classList.add('hidden');
+        }
+        let botMsg = document.querySelector('.message.bot.latest');
+        if (!botMsg) {
+          botMsg = document.createElement('div');
+          botMsg.classList.add('message', 'bot', 'latest');
+          botMsg.innerHTML = `
+            <div class="avatar"><i class="fas fa-balance-scale"></i></div>
+            <div class="message-content"><p></p></div>
+          `;
+          chatMessages.appendChild(botMsg);
+        }
+        botMsg.querySelector('.message-content p').innerHTML = data.text;
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        if (data.is_final) botMsg.classList.remove('latest');
+      });
+      
+      // Handle error messages
+      legalSocket.on('error_message', function(data) {
+        addMessage("Error: " + data.message, 'bot');
+        recordingIndicator.classList.add('hidden');
+        micButton.disabled = false;
+        micButton.innerHTML = '<i class="fas fa-microphone"></i>';
+      });
+      
+      // Listen for TTS audio event
+      legalSocket.on('tts_audio', function(data) {
+        const audio = new Audio('data:audio/mp3;base64,' + data.audio);
+        audio.play();
+      });
+      
+      // Listen for stop_audio event
+      legalSocket.on('stop_audio', function() {
+        recordingIndicator.classList.add('hidden');
+        micButton.disabled = false;
+        micButton.innerHTML = '<i class="fas fa-microphone"></i>';
+      });
+      
+      // Quick replies to prefill chat input
+      quickReplies.forEach(button => {
+        button.addEventListener('click', () => { chatInput.value = button.innerText; });
+      });
+      
+      // -------------------- DOCUMENT CHAT (RAG) --------------------
+      // Document chat elements
+      const docFileUpload = document.getElementById('doc-file-upload');
+      const docDropArea = document.getElementById('doc-drop-area');
+      const docProcessingIndicator = document.getElementById('doc-processing-indicator');
+      const docProgressBar = document.getElementById('doc-progress-bar');
+      const docProcessingStatus = document.getElementById('doc-processing-status');
+      const docUploadSection = document.getElementById('doc-upload-section');
+      const docInfoSection = document.getElementById('doc-info-section');
+      const docSummary = document.getElementById('doc-summary');
+      const docChunkCount = document.getElementById('doc-chunk-count');
+      const docCharCount = document.getElementById('doc-char-count');
+      const docFilename = document.getElementById('doc-filename');
+      const uploadNewDoc = document.getElementById('upload-new-doc');
+      const docStatus = document.getElementById('doc-status');
+      const noDocMessage = document.getElementById('no-doc-message');
+      const docChatContainer = document.getElementById('doc-chat-container');
+      const docChatMessages = document.getElementById('doc-chat-messages');
+      const docChatInput = document.getElementById('doc-chat-input');
+      const docSendButton = document.getElementById('doc-send-button');
+      const docTypingIndicator = document.getElementById('doc-typing-indicator');
+      const docQueriesSection = document.getElementById('doc-queries-section');
+      const docQueryBtns = document.querySelectorAll('.doc-query-btn');
+      const activeDocId = document.getElementById('active-doc-id');
+      
+      // File drop functionality
+      ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        docDropArea.addEventListener(eventName, preventDefaults, false);
+      });
+      
+      function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      
+      ['dragenter', 'dragover'].forEach(eventName => {
+        docDropArea.addEventListener(eventName, highlight, false);
+      });
+      
+      ['dragleave', 'drop'].forEach(eventName => {
+        docDropArea.addEventListener(eventName, unhighlight, false);
+      });
+      
+      function highlight() {
+        docDropArea.classList.add('highlight');
+      }
+      
+      function unhighlight() {
+        docDropArea.classList.remove('highlight');
+      }
+      
+      docDropArea.addEventListener('drop', handleDrop, false);
+      
+      function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        handleFiles(files);
+      }
+      
+      docFileUpload.addEventListener('change', function() {
+        handleFiles(this.files);
+      });
+      
+      function handleFiles(files) {
+        if (files.length > 0) {
+          const file = files[0];
+          
+          // Check file type
+          if (!file.name.toLowerCase().endsWith('.pdf')) {
+            alert('Please upload a PDF file');
+            return;
+          }
+          
+          // Check file size (max 10MB)
+          if (file.size > 10 * 1024 * 1024) {
+            alert('File is too large. Please upload a file smaller than 10MB');
+            return;
+          }
+          
+          uploadDocument(file);
+        }
+      }
+      
+      // Upload document to server
+      function uploadDocument(file) {
+        // Show processing indicator
+        docDropArea.classList.add('hidden');
+        docProcessingIndicator.classList.remove('hidden');
+        
+        // Create form data
+        const formData = new FormData();
+        formData.append('document', file);
+        
+        // Simulate progress
+        let progress = 0;
+        const progressInterval = setInterval(() => {
+          progress += 5;
+          if (progress > 90) {
+            clearInterval(progressInterval);
+          }
+          docProgressBar.style.width = `${progress}%`;
+          
+          // Update status message
+          if (progress < 30) {
+            docProcessingStatus.textContent = 'Extracting text...';
+          } else if (progress < 60) {
+            docProcessingStatus.textContent = 'Chunking document...';
+          } else {
+            docProcessingStatus.textContent = 'Processing content...';
+          }
+        }, 200);
+        
+        // Send to server
+        fetch('/api/legal/upload-document', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          // Clear progress animation
+          clearInterval(progressInterval);
+          docProgressBar.style.width = '100%';
+          
+          setTimeout(() => {
+            // Hide processing indicator
+            docProcessingIndicator.classList.add('hidden');
+            
+            if (data.error) {
+              alert(data.error);
+              docDropArea.classList.remove('hidden');
+              return;
+            }
+            
+            // Show document info
+            docInfoSection.classList.remove('hidden');
+            docFilename.textContent = file.name;
+            docChunkCount.textContent = data.chunk_count;
+            docCharCount.textContent = data.char_count.toLocaleString();
+            docSummary.textContent = data.summary;
+            
+            // Store the document ID
+            activeDocId.value = data.document_id;
+            
+            // Show document status and chat
+            docStatus.classList.remove('hidden');
+            noDocMessage.classList.add('hidden');
+            docChatContainer.classList.remove('hidden');
+            
+            // Show suggested queries
+            docQueriesSection.classList.remove('hidden');
+            
+            // Enable chat input
+            docChatInput.disabled = false;
+            docSendButton.disabled = false;
+            
+            // Tell the server this document is now active
+            ragSocket.emit('set_active_document', { document_id: data.document_id });
+            
+            // Add initial message
+            addDocMessage("I've analyzed your document. You can now ask me questions about its content.", 'bot');
+          }, 500);
+        })
+        .catch(error => {
+          console.error('Error uploading document:', error);
+          clearInterval(progressInterval);
+          docProcessingIndicator.classList.add('hidden');
+          docDropArea.classList.remove('hidden');
+          alert('Error uploading document. Please try again.');
+        });
+      }
+      
+      // Handle upload new document button
+      uploadNewDoc.addEventListener('click', function() {
+        // Show upload section, hide document info
+        docDropArea.classList.remove('hidden');
+        docInfoSection.classList.add('hidden');
+        docQueriesSection.classList.add('hidden');
+        
+        // Hide document status and chat
+        docStatus.classList.add('hidden');
+        noDocMessage.classList.remove('hidden');
+        docChatContainer.classList.add('hidden');
+        
+        // Disable chat input
+        docChatInput.disabled = true;
+        docSendButton.disabled = true;
+        
+        // Clear active document
+        activeDocId.value = '';
+        
+        // Clear file input
+        docFileUpload.value = '';
+        
+        // Clear chat messages
+        docChatMessages.innerHTML = '';
+      });
+      
+      // Function to add a message to the document chat
+      function addDocMessage(text, sender) {
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('message', sender === 'user' ? 'user' : 'bot');
+        
+        // Format the timestamp
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        
+        if (sender === 'bot') {
+          // Highlight citations in the text
+          const formattedText = highlightCitations(text);
+          
+          messageDiv.innerHTML = `
+            <div class="avatar">
+              <i class="fas fa-file-pdf"></i>
+            </div>
+            <div class="message-content">
+              <p>${formattedText}</p>
+              <p class="text-xs mt-1 opacity-70">${timeStr}</p>
+            </div>
+          `;
+        } else {
+          messageDiv.innerHTML = `
+            <div class="message-content">
+              <p>${text}</p>
+              <p class="text-xs mt-1 opacity-70">${timeStr}</p>
+            </div>
+            <div class="avatar">
+              <i class="fas fa-user"></i>
+            </div>
+          `;
+        }
+        
+        docChatMessages.appendChild(messageDiv);
+        docChatMessages.scrollTop = docChatMessages.scrollHeight;
+      }
+      
+      // Highlight citations in the text
+      function highlightCitations(text) {
+        // Simple regex to detect quotes
+        return text.replace(/"([^"]+)"/g, '<span class="citation">"$1"</span>');
+      }
+      
+      // Handle document chat send button
+      docSendButton.addEventListener('click', sendDocMessage);
+      
+      // Handle enter key in document chat input
+      docChatInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          sendDocMessage();
+        }
+      });
+      
+      // Send document query
+      function sendDocMessage() {
+        const query = docChatInput.value.trim();
+        if (!query) return;
+        
+        // Add user message to chat
+        addDocMessage(query, 'user');
+        
+        // Clear input
+        docChatInput.value = '';
+        
+        // Show typing indicator
+        docTypingIndicator.classList.remove('hidden');
+        
+        // Send query to server
+        ragSocket.emit('query_document', { query });
+      }
+      
+      // Handle suggested queries
+      docQueryBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          docChatInput.value = this.textContent.trim();
+          sendDocMessage();
+        });
+      });
+      
+      // Handle document chat socket.io events
+      
+      // Handle document activation confirmation
+      ragSocket.on('document_activated', function(data) {
+        console.log('Document activated:', data.document_id);
+      });
+      
+      // Handle thinking status
+      ragSocket.on('thinking', function() {
+        docTypingIndicator.classList.remove('hidden');
+      });
+      
+      // Handle RAG response
+      ragSocket.on('rag_response', function(data) {
+        if (data.is_final) {
+          // Hide typing indicator on final message
+          docTypingIndicator.classList.add('hidden');
+        }
+        
+        // Handle updating an existing message or creating a new one
+        let botMessage = docChatMessages.querySelector('.message.bot.latest');
+        if (!botMessage) {
+          botMessage = document.createElement('div');
+          botMessage.classList.add('message', 'bot', 'latest');
+          botMessage.innerHTML = `
+            <div class="avatar">
+              <i class="fas fa-file-pdf"></i>
+            </div>
+            <div class="message-content">
+              <p>${highlightCitations(data.text)}</p>
+              <p class="text-xs mt-1 opacity-70">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+            </div>
+          `;
+          docChatMessages.appendChild(botMessage);
+        } else {
+          botMessage.querySelector('.message-content p').innerHTML = highlightCitations(data.text);
+        }
+        
+        // If this is the final message, remove the 'latest' class
+        if (data.is_final) {
+          botMessage.classList.remove('latest');
+        }
+        
+        // Scroll to bottom
+        docChatMessages.scrollTop = docChatMessages.scrollHeight;
+      });
+      
+      // Handle errors
+      ragSocket.on('error', function(data) {
+        // Hide typing indicator
+        docTypingIndicator.classList.add('hidden');
+        
+        // Show error message
+        addDocMessage(`Error: ${data.message}`, 'bot');
+      });
+      
+      // Handle connection events
+      ragSocket.on('connect', function() {
+        console.log('Connected to RAG server');
+      });
+      
+      ragSocket.on('disconnect', function() {
+        console.log('Disconnected from RAG server');
+      });
+    });
+  </script>
+</body>
+</html>
