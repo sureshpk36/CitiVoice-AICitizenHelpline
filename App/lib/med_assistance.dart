@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'health_chatbot.dart';
+import 'health_dashboard.dart';
 
 class MedicalAssistancePage extends StatefulWidget {
   const MedicalAssistancePage({Key? key}) : super(key: key);
@@ -190,10 +191,42 @@ class _MedicalAssistancePageState extends State<MedicalAssistancePage> {
                           color: Colors.grey,
                         ),
                       ),
-                      const SizedBox(height: 24),
 
                       // Service cards
+                      const SizedBox(height: 24),
 
+                      // Emergency call button with gradient
+                      _buildServiceCard(
+                        icon: Icons.health_and_safety,
+                        iconColor: Colors.white,
+                        iconBgGradient: LinearGradient(
+                          colors: [
+                            Colors.purple.shade400,
+                            Colors.purple.shade600
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        title: 'Track Vitals',
+                        subtitle: 'Real time health trends',
+                        bgGradient: LinearGradient(
+                          colors: [
+                            Colors.purple.shade50,
+                            Colors.purple.shade50.withOpacity(0.3)
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        onTap: () {
+                          // Navigate to the grievance screen when tapped
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EnhancedHealthDashboard(),
+                            ),
+                          );
+                        },
+                      ),
                       const SizedBox(height: 16),
                       _buildServiceCard(
                         icon: Icons.psychology,
