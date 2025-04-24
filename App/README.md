@@ -28,21 +28,32 @@ CitiVoice is integrated with a Flutter-based **IoT app** to offer **real-time he
 
 ---
 
+## Technology Stack
+
+- **Flutter** for mobile application development
+- **AI & Machine Learning** for the voice assistant and chatbot functionality
+- **IoT Integration** for health monitoring
+- **Cloud Infrastructure** for data storage and processing
+
+---
+
 ## Screenshots
 
 Here are a few screenshots of the CitiVoice interface and IoT app in action:
 
-![CitiVoice Screenshot 1](https://github.com/user-attachments/assets/3487b5ed-026c-4065-8646-27e779e36d9f)
-![CitiVoice Screenshot 2](https://github.com/user-attachments/assets/2c3820c6-4638-4a35-a3cd-0ed87173ba82)
-![CitiVoice Screenshot 3](https://github.com/user-attachments/assets/cb033ae9-8c30-4af8-bd9e-034e5a3e2340)
-![CitiVoice Screenshot 4](https://github.com/user-attachments/assets/8f995241-04ba-495f-b48a-626727b8e043)
-![CitiVoice Screenshot 5](https://github.com/user-attachments/assets/fd5feebf-c47d-4a76-b46f-a6206ad2efb6)
-![CitiVoice Screenshot 6](https://github.com/user-attachments/assets/46d8cd8a-0afe-43af-a79f-0dc05fa174ec)
-![CitiVoice Screenshot 7](https://github.com/user-attachments/assets/b2fbc477-d2a6-4f25-a4fe-e8a32a467f8e)
-![CitiVoice Screenshot 8](https://github.com/user-attachments/assets/6ab32c1c-cf2e-4b48-a736-f503d523482d)
-![CitiVoice Screenshot 9](https://github.com/user-attachments/assets/52352739-328d-45d2-a4ea-a6172a5ac2d4)
-![CitiVoice Screenshot 10](https://github.com/user-attachments/assets/7caafbe1-102d-479d-8ec3-5f695e1f78f2)
-![CitiVoice Screenshot 11](https://github.com/user-attachments/assets/cc66d292-81ba-43e0-ba36-3ca708472bdc)
-![CitiVoice Screenshot 12](https://github.com/user-attachments/assets/2010de79-7577-4fb9-8a26-ffb4a16470c0)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/3487b5ed-026c-4065-8646-27e779e36d9f" width="300" alt="CitiVoice Screenshot 1" />
+  <img src="https://github.com/user-attachments/assets/2c3820c6-4638-4a35-a3cd-0ed87173ba82" width="300" alt="CitiVoice Screenshot 2" />
+  <img src="https://github.com/user-attachments/assets/cb033ae9-8c30-4af8-bd9e-034e5a3e2340" width="300" alt="CitiVoice Screenshot 3" />
+  <img src="https://github.com/user-attachments/assets/8f995241-04ba-495f-b48a-626727b8e043" width="300" alt="CitiVoice Screenshot 4" />
+  <img src="https://github.com/user-attachments/assets/fd5feebf-c47d-4a76-b46f-a6206ad2efb6" width="300" alt="CitiVoice Screenshot 5" />
+  <img src="https://github.com/user-attachments/assets/46d8cd8a-0afe-43af-a79f-0dc05fa174ec" width="300" alt="CitiVoice Screenshot 6" />
+  <img src="https://github.com/user-attachments/assets/b2fbc477-d2a6-4f25-a4fe-e8a32a467f8e" width="300" alt="CitiVoice Screenshot 7" />
+  <img src="https://github.com/user-attachments/assets/6ab32c1c-cf2e-4b48-a736-f503d523482d" width="300" alt="CitiVoice Screenshot 8" />
+  <img src="https://github.com/user-attachments/assets/52352739-328d-45d2-a4ea-a6172a5ac2d4" width="300" alt="CitiVoice Screenshot 9" />
+  <img src="https://github.com/user-attachments/assets/7caafbe1-102d-479d-8ec3-5f695e1f78f2" width="300" alt="CitiVoice Screenshot 10" />
+  <img src="https://github.com/user-attachments/assets/cc66d292-81ba-43e0-ba36-3ca708472bdc" width="300" alt="CitiVoice Screenshot 11" />
+  <img src="https://github.com/user-attachments/assets/2010de79-7577-4fb9-8a26-ffb4a16470c0" width="300" alt="CitiVoice Screenshot 12" />
+</p>
 
 
