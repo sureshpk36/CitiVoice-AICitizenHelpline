@@ -28,15 +28,6 @@ CitiVoice is integrated with a Flutter-based **IoT app** to offer **real-time he
 
 ---
 
-## Technology Stack
-
-- **Flutter** for mobile application development
-- **AI & Machine Learning** for the voice assistant and chatbot functionality
-- **IoT Integration** for health monitoring
-- **Cloud Infrastructure** for data storage and processing
-
----
-
 ## Screenshots
 
 Here are a few screenshots of the CitiVoice interface and IoT app in action:
