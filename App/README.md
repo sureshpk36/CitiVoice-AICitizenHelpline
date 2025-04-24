@@ -1,19 +1,33 @@
-# AI Citizen Helpline
+# CitiVoice-AI Citizen Helpline 🤖📞
 
-A new Flutter project created with FlutLab - https://flutlab.io
+    AI Voice Assistant: Developed CitiVoice, a 24/7 AI-powered voice assistant to help users with:
 
-## Getting Started
+        Health-related queries 🏥
 
-A few resources to get you started if this is your first Flutter project:
+        Legal issues ⚖️
 
-- https://flutter.dev/docs/get-started/codelab
-- https://flutter.dev/docs/cookbook
+        Government services 🏛️
 
-For help getting started with Flutter, view our
-https://flutter.dev/docs, which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+        Grievance filing 📑
 
-## Getting Started: FlutLab - Flutter Online IDE
+        Seamless interaction through an AI chatbot 💬
 
-- How to use FlutLab? Please, view our https://flutlab.io/docs
-- Join the discussion and conversation on https://flutlab.io/residents
+    IoT Healthcare Integration: Built a Flutter-based IoT app for real-time monitoring of:
+
+        Temperature 🌡️
+
+        Heart rate ❤️
+
+        SpO2 (blood oxygen levels) 💨
+
+        Instant alerts for health anomalies 🚨
+
+    Additional Features:
+
+        Doctor appointment scheduling 🗓️
+
+        Personalized health advice via AI chatbot 🧠
+
+        Real-time health monitoring with anomaly detection 📊
+
+![photo_6075499714758951326_y](https://github.com/user-attachments/assets/3683a73e-54be-4c0f-89e7-f0cf648bb426)
