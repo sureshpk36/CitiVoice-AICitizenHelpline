@@ -1,6 +1,6 @@
 # CitiVoice-AI Citizen Helpline 🤖📞
 
-Welcome to **CitiVoice**, an innovative 24/7 AI-powered voice assistant developed using **Flutter** to help citizens with various services and health-related queries. With seamless integration across multiple domains, **CitiVoice** ensures that users get accurate information and assistance at their fingertips.
+Welcome to **CitiVoice**, a cutting-edge, AI-powered voice assistant available 24/7, developed with **Flutter**. Designed to assist citizens with health-related queries, legal advice, and grievance filing, CitiVoice provides quick, accurate, and reliable information, ensuring seamless and efficient support at your fingertips.
 
 ---
 
